@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <style>
+      body {
+        font-family: "Segoe UI", system-ui, sans-serif;
+        background: #0f141c;
+        color: #ffffff;
+        margin: 0;
+        padding: 15px;
+        width: 380px;
+        box-sizing: border-box;
+      }
+
+      h3 {
+        color: #00d2d3;
+        font-size: 1.3rem;
+        margin: 0 0 4px 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      p.intro {
+        font-size: 11px;
+        color: #8c92ac;
+        margin: 0 0 12px 0;
+      }
+
+      button {
+        width: 100%;
+        background: linear-gradient(135deg, #341f97, #00d2d3);
+        color: white;
+        border: none;
+        padding: 12px;
+        font-size: 14px;
+        font-weight: 700;
+        border-radius: 10px;
+        cursor: pointer;
+      }
+
+      #status {
+        text-align: center;
+        color: #feca57;
+        font-size: 12px;
+        font-weight: 600;
+        margin: 10px 0;
+      }
+
+      /* 📊 TRUST CORE MATRIX METER */
+      .metrics-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-top: 12px;
+        display: none;
+      }
+
+      .metric-box {
+        background: #161d26;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 12px;
+        padding: 12px;
+        text-align: center;
+      }
+
+      .metric-title {
+        font-size: 10px;
+        text-transform: uppercase;
+        color: #8c92ac;
+        letter-spacing: 0.5px;
+        margin-bottom: 2px;
+      }
+
+      .metric-value {
+        font-size: 2rem;
+        font-weight: 900;
+      }
+
+      .time-saved-sub {
+        font-size: 10px;
+        color: #1dd1a1;
+        margin-top: 2px;
+        font-weight: 600;
+      }
+
+      /* 🚨 PARALLEL WARNING TILES */
+      .warning-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 8px;
+        margin-top: 12px;
+        display: none;
+      }
+
+      .warning-card {
+        padding: 10px;
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+
+      /* 🔴🟡🟢 CARD RISK LEVEL SHIELDS */
+      .risk-high {
+        background: rgba(255, 107, 107, 0.12);
+        border-left: 4px solid #ff6b6b;
+      }
+
+      .risk-medium {
+        background: rgba(254, 202, 87, 0.12);
+        border-left: 4px solid #feca57;
+      }
+
+      .risk-safe {
+        background: rgba(29, 209, 161, 0.12);
+        border-left: 4px solid #1dd1a1;
+      }
+
+      .warning-card h4 {
+        margin: 0;
+        font-size: 11px;
+        color: #ffffff;
+      }
+
+      .warning-card p {
+        margin: 0;
+        font-size: 11px;
+        color: #c8d6e5;
+        line-height: 1.3;
+      }
+
+      /* 🔍 HIDDEN TRAPS CORE BOX */
+      .traps-panel {
+        background: rgba(255, 159, 67, 0.1);
+        border: 1px dashed #ff9f43;
+        border-radius: 10px;
+        padding: 12px;
+        margin-top: 12px;
+        display: none;
+      }
+
+      .traps-panel h4 {
+        margin: 0 0 4px 0;
+        font-size: 11px;
+        color: #ff9f43;
+        text-transform: uppercase;
+      }
+
+      .traps-list {
+        margin: 0;
+        padding-left: 15px;
+        font-size: 11px;
+        color: #f5f6fa;
+        line-height: 1.4;
+      }
+
+      /* 💡 DIRECT SUMMARY REC BOX */
+      .rec-box {
+        background: #341f97;
+        border-radius: 10px;
+        padding: 12px;
+        margin-top: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        display: none;
+      }
+
+      .rec-box h4 {
+        margin: 0 0 4px 0;
+        font-size: 10px;
+        color: #00d2d3;
+        text-transform: uppercase;
+      }
+
+      .rec-text {
+        margin: 0;
+        font-size: 11px;
+        font-weight: 600;
+        line-height: 1.4;
+      }
+    </style>
+  </head>
+  <body>
+    <h3>SafeSign AI Auditor</h3>
+    <p class="intro">
+      Instant domain risk analyzer, trap auditor, and summary metric dashboard.
+    </p>
+
+    <button id="scan-btn">Scan Active Page ⚡</button>
+    <div id="status"></div>
+
+    <div class="metrics-row" id="metricsSection">
+      <div class="metric-box">
+        <div class="metric-title">Trust Score</div>
+        <div class="metric-value" id="trustVal">--</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-title">Time Saved</div>
+        <div class="metric-value" style="color: #00d2d3" id="timeVal">0m</div>
+        <div class="time-saved-sub" id="timeSub">30m scan → 30s</div>
+      </div>
+    </div>
+
+    <div class="traps-panel" id="trapsSection">
+      <h4>Hidden Traps Found</h4>
+      <ul class="traps-list" id="trapsList"></ul>
+    </div>
+
+    <div class="warning-grid" id="warningsSection">
+      <div class="warning-card" id="cardPhish">
+        <h4>🎣 Phishing & Scam Identity</h4>
+        <p id="txtPhish">Checking links...</p>
+      </div>
+      <div class="warning-card" id="cardSsl">
+        <h4>Encryption Integrity</h4>
+        <p id="txtSsl">Checking SSL...</p>
+      </div>
+      <div class="warning-card" id="cardAge">
+        <h4>Registration Longevity</h4>
+        <p id="txtAge">Checking history...</p>
+      </div>
+      <div class="warning-card" id="cardData">
+        <h4>Tracking Footprint</h4>
+        <p id="txtData">Checking scripts...</p>
+      </div>
+    </div>
+
+    <div class="rec-box" id="recSection">
+      <h4>Action Recommendation</h4>
+      <p class="rec-text" id="recVal">Waiting for pipeline...</p>
+    </div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
